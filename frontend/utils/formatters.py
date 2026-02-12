@@ -24,25 +24,33 @@ def mask_cnpj(cnpj) -> str:
     return "{}{}.XXX.XXX/{}{}{}{}-{}{}".format(digits[0], digits[1], digits[8], digits[9], digits[10], digits[11], digits[12], digits[13])
 
 
-def format_datetime(dt: datetime) -> str:
+def format_datetime(dt) -> str:
     """Format datetime as DD/MM/YYYY HH:MM"""
+    if dt is None or dt == "":
+        return "N/A"
     if isinstance(dt, str):
         try:
-            dt = datetime.fromisoformat(dt)
+            # Handle ISO format with or without Z
+            dt_str = dt.replace('Z', '+00:00')
+            dt = datetime.fromisoformat(dt_str)
         except:
-            return dt
-    return dt.strftime("%d/%m/%Y %H:%M")
+            return str(dt)
+    try:
+        return dt.strftime("%d/%m/%Y %H:%M")
+    except:
+        return str(dt)
 
 
 def format_date(dt) -> str:
     """Format date as DD/MM/YYYY"""
-    if dt is None:
+    if dt is None or dt == "":
         return "N/A"
     if isinstance(dt, str):
         try:
-            dt = datetime.fromisoformat(dt.replace('Z', '+00:00'))
+            dt_str = dt.replace('Z', '+00:00')
+            dt = datetime.fromisoformat(dt_str)
         except:
-            return dt
+            return str(dt)
     try:
         return dt.strftime("%d/%m/%Y")
     except:

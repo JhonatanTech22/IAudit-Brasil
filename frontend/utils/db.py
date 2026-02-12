@@ -10,10 +10,14 @@ load_dotenv()
 class DataLayer:
     def __init__(self):
         self.use_mock = not os.getenv("SUPABASE_URL")
-        # Initialize session state for mock persistence if we don't have a DB
-        if self.use_mock and "mock_db" not in st.session_state:
-            st.session_state.mock_db = get_mock_empresas()
-            st.session_state.mock_consultas = get_latest_consultas_by_empresa()
+        try:
+            # Initialize session state for mock persistence if we don't have a DB
+            if self.use_mock and "mock_db" not in st.session_state:
+                st.session_state.mock_db = get_mock_empresas()
+                st.session_state.mock_consultas = get_latest_consultas_by_empresa()
+        except:
+            # Not in a streamlit context, maybe background or loading
+            pass
 
     def get_empresas(self):
         if self.use_mock:

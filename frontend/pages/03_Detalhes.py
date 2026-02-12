@@ -40,6 +40,9 @@ try:
     emp_con = stats.get('consultas', {})
 
     # Official Entity Header
+    status_color = '#065f46' if empresa.get('ativo', False) else '#991b1b'
+    status_text = 'ESTADO: ATIVO' if empresa.get('ativo', False) else 'ESTADO: INATIVO'
+    
     st.markdown(f"""
         <div style='background: #000; padding: 6px 16px; margin-bottom: 1.5rem; border-bottom: 2px solid var(--gov-yellow); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.2em; color: var(--gov-yellow);'>
             AUDITORIA INSTITUCIONAL — CERTIFICAÇÃO OFICIAL DE REGULARIDADE FISCAL
@@ -52,8 +55,8 @@ try:
                         CNPJ: {format_cnpj(empresa.get('cnpj'))} | ID: {empresa.get('id', 'N/A')} {f"| IE-PR: {empresa.get('inscricao_estadual_pr')}" if empresa.get('inscricao_estadual_pr') else ""}
                     </div>
                 </div>
-                <div style='background: {'#065f46' if empresa.get('ativo', False) else '#991b1b'}; color: white; padding: 0.8rem 1.5rem; border-radius: 999px; font-weight: 800; font-size: 0.8rem; letter-spacing: 0.1em; box-shadow: 0 0 20px rgba(0,0,0,0.2)'>
-                    {'ESTADO: ATIVO' if empresa.get('ativo', False) else 'ESTADO: INATIVO'}
+                <div style='background: {status_color}; color: white; padding: 0.8rem 1.5rem; border-radius: 999px; font-weight: 800; font-size: 0.8rem; letter-spacing: 0.1em; box-shadow: 0 0 20px rgba(0,0,0,0.2)'>
+                    {status_text}
                 </div>
             </div>
         </div>
@@ -116,9 +119,9 @@ try:
         st.markdown("<div style='background: #010409; border: 1px solid var(--border-color); padding: 1.5rem; margin-top: 1rem;'>", unsafe_allow_html=True)
         if emp_con:
             h_data = []
-            consultas_list = [v for v in emp_con.values() if v is not None]
+            consultas_list = [v for v in emp_con.values() if isinstance(v, dict)]
             if consultas_list:
-                for c in sorted(consultas_list, key=lambda x: x.get('data_execucao', ''), reverse=True):
+                for c in sorted(consultas_list, key=lambda x: str(x.get('data_execucao', '')), reverse=True):
                     h_data.append({
                         'TIPO': str(c.get('tipo', '')).upper().replace('CND_', ''),
                         'MÉTODO': 'OFICIAL',

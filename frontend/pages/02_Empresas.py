@@ -57,16 +57,23 @@ try:
     if filtered:
         table_data = []
         for e in filtered:
-            status = latest_status.get(e['id'], {}).get('consultas', {}) if latest_status else {}
+            emp_id = e.get('id', '0')
+            emp_status_obj = latest_status.get(emp_id, {}) if latest_status else {}
+            consultas = emp_status_obj.get('consultas', {}) if isinstance(emp_status_obj, dict) else {}
+            
+            cnd_fed = consultas.get('cnd_federal', {}) if isinstance(consultas, dict) else {}
+            cnd_pr = consultas.get('cnd_pr', {}) if isinstance(consultas, dict) else {}
+            fgts = consultas.get('fgts', {}) if isinstance(consultas, dict) else {}
+
             table_data.append({
                 'IDENTIFICAÇÃO': str(e.get('razao_social', 'N/A')).upper(),
                 'CNPJ': mask_cnpj(e.get('cnpj')),
-                'FEDERAL': get_status_icon(status.get('cnd_federal', {}).get('situacao') if status.get('cnd_federal') else None),
-                'ESTADUAL': get_status_icon(status.get('cnd_pr', {}).get('situacao') if status.get('cnd_pr') else None),
-                'FGTS': get_status_icon(status.get('fgts', {}).get('situacao') if status.get('fgts') else None),
+                'FEDERAL': get_status_icon(cnd_fed.get('situacao') if isinstance(cnd_fed, dict) else None),
+                'ESTADUAL': get_status_icon(cnd_pr.get('situacao') if isinstance(cnd_pr, dict) else None),
+                'FGTS': get_status_icon(fgts.get('situacao') if isinstance(fgts, dict) else None),
                 'CICLO': format_periodicidade(str(e.get('periodicidade', 'semanal'))).upper(),
                 'STATUS': '● ATIVO' if e.get('ativo', False) else '○ INATIVO',
-                'ID': e.get('id', '0')
+                'ID': emp_id
             })
         
         st.dataframe(pd.DataFrame(table_data), use_container_width=True, hide_index=True)
@@ -81,9 +88,9 @@ try:
         col_a1, col_a2, col_a3 = st.columns([2, 1, 1])
         with col_a1:
             if st.button(f"ABRIR PAINEL DE CONFORMIDADE", use_container_width=True, type="primary"):
-                selected_emp = next((e for e in filtered if e.get('razao_social') == selected_name), None)
+                selected_emp = next((e for e in filtered if str(e.get('razao_social')) == selected_name), None)
                 if selected_emp:
-                    st.session_state.selected_emp_id = selected_emp['id']
+                    st.session_state.selected_emp_id = selected_emp.get('id')
                     st.switch_page("pages/03_Detalhes.py")
         with col_a2:
             if st.button("ACIONAR SINCRONIA MANUAL", use_container_width=True):

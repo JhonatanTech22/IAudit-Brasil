@@ -23,7 +23,7 @@ st.markdown("""
     <div style='margin-bottom: 3.5rem; border-left: 6px solid var(--gov-yellow); padding-left: 1.5rem;'>
         <div class='system-label'>DATA ANALYTICS NODE — OFICIAL</div>
         <h1 style='font-size: 2.8rem !important;'>Console de Auditoria</h1>
-        <p style='font-size: 0.95rem; color: #94a3b8; font-weight: 600; letter-spacing: 0.05em;'>INDICADORES DE CONFORMIDADE E RISCO FISCAL</p>
+        <p style='font-size: 0.95rem; color: #cbd5e1; font-weight: 600; letter-spacing: 0.05em;'>INDICADORES DE CONFORMIDADE E RISCO FISCAL</p>
     </div>
 """, unsafe_allow_html=True)
 

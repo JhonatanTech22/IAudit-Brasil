@@ -21,7 +21,7 @@ st.markdown("""
     <div style='text-align: center; padding: 3rem 0; border-left: 8px solid var(--gov-yellow); margin: 3rem 0; background: linear-gradient(90deg, rgba(15, 23, 42, 0.5) 0%, transparent 100%);'>
         <div class='system-label'>VIGILÂNCIA INSTITUCIONAL ESTRUTURADA</div>
         <h1 style='font-size: 4rem !important;'>iAudit Brasil</h1>
-        <p style='color: var(--text-muted); font-size: 1.3rem; font-weight: 500; max-width: 850px; margin: 1.5rem auto; line-height: 1.6;'>
+        <p style='color: white; font-size: 1.3rem; font-weight: 500; max-width: 850px; margin: 1.5rem auto; line-height: 1.6;'>
             Monitoramento inteligente e gestão de ativos institucionais em tempo real. 
             Autoridade técnica em conformidade para o ecossistema federativo.
         </p>
@@ -83,7 +83,7 @@ st.markdown("""
         <div style='display: flex; justify-content: space-between; align-items: center;'>
             <div>
                 <h3 style='color: white; margin-bottom: 0.5rem;'>Terminal de Gestão</h3>
-                <p style='color: #94a3b8; font-size: 0.95rem;'>Inicie novas auditorias ou gerencie ativos importados.</p>
+                <p style='color: #cbd5e1; font-size: 0.95rem;'>Inicie novas auditorias ou gerencie ativos importados.</p>
             </div>
         </div>
     </div>
@@ -107,8 +107,8 @@ with col_btn4:
 # Infrastructure Status Line
 st.markdown("""
     <div style='display: flex; justify-content: center; gap: 2rem; opacity: 0.8; margin-top: 4rem;'>
-        <div style='color: #94a3b8; font-size: 0.7rem; letter-spacing: 0.2em;'>CORE-ENGINE: ACTIVE</div>
-        <div style='color: #94a3b8; font-size: 0.7rem; letter-spacing: 0.2em;'>DATA-SYNC: LOCAL-STATE</div>
-        <div style='color: #94a3b8; font-size: 0.7rem; letter-spacing: 0.2em;'>SECURE-LAYER: AES-512</div>
+        <div style='color: #cbd5e1; font-size: 0.7rem; letter-spacing: 0.2em;'>CORE-ENGINE: ACTIVE</div>
+        <div style='color: #cbd5e1; font-size: 0.7rem; letter-spacing: 0.2em;'>DATA-SYNC: LOCAL-STATE</div>
+        <div style='color: #cbd5e1; font-size: 0.7rem; letter-spacing: 0.2em;'>SECURE-LAYER: AES-512</div>
     </div>
 """, unsafe_allow_html=True)

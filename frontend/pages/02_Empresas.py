@@ -19,11 +19,11 @@ st.markdown("""
          <span>BRASIL — INVENTÁRIO DE ATIVOS FEDERAIS</span>
          <span>RECONHECIMENTO INSTITUCIONAL</span>
     </div>
-    <div style='margin-bottom: 3.5rem; border-left: 6px solid var(--gov-yellow); padding-left: 1.5rem;'>
-        <div class='system-label'>BASE REPOSITÓRIO V2.0 — GOVERNAMENTAL</div>
-        <h1 style='font-size: 2.8rem !important;'>Repositório de Ativos</h1>
-        <p style='font-size: 1rem; color: var(--text-muted); font-weight: 600; letter-spacing: 0.05em;'>GESTÃO ESTRUTURADA DE MONITORAMENTO FISCAL (SENADO/FGTS)</p>
-    </div>
+        <div style='margin-bottom: 3.5rem; border-left: 6px solid var(--gov-yellow); padding-left: 1.5rem;'>
+            <div class='system-label'>BASE REPOSITÓRIO V2.0 — GOVERNAMENTAL</div>
+            <h1 style='font-size: 2.8rem !important;'>Repositório de Ativos</h1>
+            <p style='font-size: 1rem; color: #cbd5e1; font-weight: 600; letter-spacing: 0.05em;'>GESTÃO ESTRUTURADA DE MONITORAMENTO FISCAL (SENADO/FGTS)</p>
+        </div>
 """, unsafe_allow_html=True)
 
 try:
@@ -102,7 +102,7 @@ try:
     else:
         st.markdown("""
             <div style='text-align: center; padding: 4rem; background: #0f172a; border: 1px dashed rgba(255,255,255,0.1); border-radius: 12px;'>
-                <p style='color: #94a3b8; font-weight: 500; font-size: 0.9rem;'>CONSULTA SEM RESULTADOS CORRESPONDENTES</p>
+                <p style='color: #cbd5e1; font-weight: 500; font-size: 0.9rem;'>CONSULTA SEM RESULTADOS CORRESPONDENTES</p>
             </div>
         """, unsafe_allow_html=True)
 

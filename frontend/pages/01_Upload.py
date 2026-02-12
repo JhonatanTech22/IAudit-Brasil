@@ -137,7 +137,7 @@ try:
         st.markdown("""
             <div style='text-align: center; padding: 4rem 2rem; background: #1e293b; border: 1px solid var(--border-color); border-radius: 12px; margin-top: 2rem;'>
                 <h3 style='margin-bottom: 1rem; color: white !important;'>Console de Ingestão</h3>
-                <p style='color: var(--text-muted); font-size: 1rem; max-width: 500px; margin: 0 auto; line-height: 1.6;'>
+                <p style='color: #f8fafc; font-size: 1rem; max-width: 500px; margin: 0 auto; line-height: 1.6;'>
                     Carregue seu inventário de CNPJs. O motor <strong>IAudit</strong> realizará a triagem automática e iniciará a vigilância institucional nos pilares Federal, Estadual e Caixa FGTS.
                 </p>
             </div>

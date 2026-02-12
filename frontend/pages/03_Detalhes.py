@@ -51,7 +51,7 @@ try:
             <div style='display: flex; justify-content: space-between; align-items: start;'>
                 <div>
                     <h2 style='margin-bottom: 0.5rem; font-size: 2.8rem; color: #f8fafc !important; font-weight: 900;'>{str(empresa.get('razao_social', 'N/A')).upper()}</h2>
-                    <div style='color: #94a3b8; font-family: "JetBrains Mono", monospace; font-size: 1rem; letter-spacing: 0.1em;'>
+                    <div style='color: #f8fafc; font-family: "JetBrains Mono", monospace; font-size: 1rem; letter-spacing: 0.1em;'>
                         CNPJ: {format_cnpj(empresa.get('cnpj'))} | ID: {empresa.get('id', 'N/A')} {f"| IE-PR: {empresa.get('inscricao_estadual_pr')}" if empresa.get('inscricao_estadual_pr') else ""}
                     </div>
                 </div>

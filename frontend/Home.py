@@ -104,6 +104,48 @@ with col_btn4:
     if st.button("📑 DOSSIÊ", use_container_width=True):
         st.switch_page("pages/03_Detalhes.py")
 
+# Automation Management Center
+st.markdown("<br><br>", unsafe_allow_html=True)
+st.markdown("""
+    <div style='background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem;'>
+        <div style='display: flex; justify-content: space-between; align-items: center;'>
+            <div style='display: flex; align-items: center;'>
+                <div style='width: 12px; height: 12px; background: #10b981; border-radius: 50%; margin-right: 1rem; box-shadow: 0 0 10px #10b981;'></div>
+                <h4 style='color: white; margin: 0;'>Agendador Inteligente IAudit</h4>
+            </div>
+            <div style='color: #94a3b8; font-size: 0.8rem; font-family: monospace;'>PROX. EXECUÇÃO: T+5min</div>
+        </div>
+        <p style='color: #cbd5e1; font-size: 0.85rem; margin-top: 1rem; line-height: 1.5;'>
+            O motor de agendamento monitora silenciosamente o repositório. Em produção (n8n), ele executa rotinas de CND Federal, PR e FGTS conforme a periodicidade de cada ativo.
+        </p>
+    </div>
+""", unsafe_allow_html=True)
+
+col_auto1, col_auto2 = st.columns([2, 1])
+with col_auto1:
+    st.info("A ativação no n8n requer configuração do Supabase no arquivo .env")
+with col_auto2:
+    if st.button("▶️ FORÇAR AGENDADOR", use_container_width=True):
+        import requests
+        import os
+        from dotenv import load_dotenv
+        load_dotenv()
+        n8n_url = os.getenv("N8N_WEBHOOK_URL", "http://localhost:5678/webhook")
+        try:
+            r = requests.get(f"{n8n_url}/agendador", timeout=5)
+            if r.status_code == 200:
+                st.success("Agendador disparado com sucesso!")
+            else:
+                st.error(f"Erro ao disparar: {r.status_code}")
+        except Exception as e:
+            st.warning("Usando simulador local (Mock n8n)")
+            # Try local mock
+            try:
+                r = requests.get("http://localhost:5678/webhook/agendador", timeout=2)
+                st.success("Simulador local executado!")
+            except:
+                st.error("Servidor Mock não está rodando.")
+
 # Infrastructure Status Line
 st.markdown("""
     <div style='display: flex; justify-content: center; gap: 2rem; opacity: 0.8; margin-top: 4rem;'>

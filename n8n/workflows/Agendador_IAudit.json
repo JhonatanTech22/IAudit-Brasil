@@ -93,7 +93,7 @@
         {
             "parameters": {
                 "method": "POST",
-                "url": "http://localhost:5678/webhook/consulta-cnd-federal",
+                "url": "https://n8n2.allanturing.com/webhook/consulta-cnd-federal",
                 "options": {
                     "bodyParametersUi": {
                         "parameter": [

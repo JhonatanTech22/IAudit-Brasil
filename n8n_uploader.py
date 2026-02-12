@@ -49,7 +49,12 @@ def upload_workflows():
                 # Try to activate
                 activate_url = f"{N8N_URL}/{workflow_id}"
                 print(f"Activating {workflow_id}...")
-                activate_response = requests.patch(activate_url, headers=HEADERS, json={"active": True})
+                
+                # n8n V1 update requires full object
+                activation_data = workflow_data.copy()
+                activation_data["active"] = True
+                
+                activate_response = requests.put(activate_url, headers=HEADERS, json=activation_data)
                 
                 if activate_response.status_code == 200:
                     print(f"Successfully activated {filename}.")

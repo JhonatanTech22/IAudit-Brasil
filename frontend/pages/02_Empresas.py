@@ -61,9 +61,10 @@ try:
             emp_status_obj = latest_status.get(emp_id, {}) if latest_status else {}
             consultas = emp_status_obj.get('consultas', {}) if isinstance(emp_status_obj, dict) else {}
             
-            cnd_fed = consultas.get('cnd_federal', {}) if isinstance(consultas, dict) else {}
-            cnd_pr = consultas.get('cnd_pr', {}) if isinstance(consultas, dict) else {}
-            fgts = consultas.get('fgts', {}) if isinstance(consultas, dict) else {}
+            # Safe access with generic dict handling to avoid strict type-check errors
+            cnd_fed = consultas.get('cnd_federal', {}) if hasattr(consultas, 'get') else {}
+            cnd_pr = consultas.get('cnd_pr', {}) if hasattr(consultas, 'get') else {}
+            fgts = consultas.get('fgts', {}) if hasattr(consultas, 'get') else {}
 
             table_data.append({
                 'IDENTIFICAÇÃO': str(e.get('razao_social', 'N/A')).upper(),

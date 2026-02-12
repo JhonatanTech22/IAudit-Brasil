@@ -90,15 +90,18 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Functional navigation console
-col_btn1, col_btn2, col_btn3 = st.columns([1, 1, 1])
+col_btn1, col_btn2, col_btn3, col_btn4 = st.columns([1, 1, 1, 1])
 with col_btn1:
-    if st.button("📊 VER DASHBOARD", use_container_width=True, type="primary"):
+    if st.button("📊 DASHBOARD", use_container_width=True, type="primary"):
         st.switch_page("pages/00_Dashboard.py")
 with col_btn2:
-    if st.button("🏢 GERENCIAR EMPRESAS", use_container_width=True):
-        st.switch_page("pages/02_Empresas.py")
+    if st.button("📥 INGESTÃO", use_container_width=True):
+        st.switch_page("pages/01_Upload.py")
 with col_btn3:
-    if st.button("📑 DOSSIÊ DETALHADO", use_container_width=True):
+    if st.button("🏢 EMPRESAS", use_container_width=True):
+        st.switch_page("pages/02_Empresas.py")
+with col_btn4:
+    if st.button("📑 DOSSIÊ", use_container_width=True):
         st.switch_page("pages/03_Detalhes.py")
 
 # Infrastructure Status Line

@@ -1,0 +1,238 @@
+{
+    "name": "Consulta_CND_PR",
+    "nodes": [
+        {
+            "parameters": {
+                "httpMethod": "POST",
+                "path": "consulta-cnd-pr",
+                "responseMode": "lastNode",
+                "options": {}
+            },
+            "id": "webhook-trigger",
+            "name": "Webhook Trigger",
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 2,
+            "position": [
+                250,
+                300
+            ],
+            "webhookId": "consulta-cnd-pr"
+        },
+        {
+            "parameters": {
+                "operation": "executeQuery",
+                "query": "UPDATE consultas SET status = 'processando' WHERE id = '{{ $json.body.consulta_id }}'"
+            },
+            "id": "update-status",
+            "name": "Marcar como Processando",
+            "type": "n8n-nodes-base.postgres",
+            "typeVersion": 2.5,
+            "position": [
+                450,
+                300
+            ],
+            "credentials": {
+                "postgres": {
+                    "id": "supabase-connection",
+                    "name": "Supabase IAudit"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "https://api.infosimples.com/api/v2/consultas/sefaz/pr/certidao-debitos",
+                "authentication": "genericCredentialType",
+                "genericAuthType": "httpHeaderAuth",
+                "sendHeaders": true,
+                "headerParameters": {
+                    "parameters": [
+                        {
+                            "name": "Authorization",
+                            "value": "Bearer sntc-QB4cRyQ19y-VgLlBZSwh_41YupJFE9g_-Ye"
+                        }
+                    ]
+                },
+                "sendBody": true,
+                "bodyParameters": {
+                    "parameters": [
+                        {
+                            "name": "cnpj",
+                            "value": "={{ $json.body.cnpj }}"
+                        },
+                        {
+                            "name": "inscricao_estadual",
+                            "value": "={{ $json.body.inscricao_estadual || '' }}"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "id": "api-call",
+            "name": "Consultar SEFAZ PR",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                650,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "amount": 30,
+                "unit": "seconds"
+            },
+            "id": "wait",
+            "name": "Aguardar",
+            "type": "n8n-nodes-base.wait",
+            "typeVersion": 1.1,
+            "position": [
+                850,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "options": {
+                        "caseSensitive": true,
+                        "leftValue": "",
+                        "typeValidation": "strict"
+                    },
+                    "conditions": [
+                        {
+                            "id": "success",
+                            "leftValue": "={{ $json.code }}",
+                            "rightValue": "200",
+                            "operator": {
+                                "type": "number",
+                                "operation": "equals"
+                            }
+                        }
+                    ],
+                    "combinator": "and"
+                },
+                "options": {}
+            },
+            "id": "check-success",
+            "name": "Sucesso?",
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 2.1,
+            "position": [
+                1050,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "operation": "executeQuery",
+                "query": "UPDATE consultas SET status = 'concluida', situacao = '{{ $json.data.situacao }}', pdf_url = '{{ $json.data.pdf_url }}', data_execucao = NOW() WHERE id = '{{ $('Webhook Trigger').item.json.body.consulta_id }}'"
+            },
+            "id": "save-success",
+            "name": "Salvar Sucesso",
+            "type": "n8n-nodes-base.postgres",
+            "typeVersion": 2.5,
+            "position": [
+                1250,
+                200
+            ],
+            "credentials": {
+                "postgres": {
+                    "id": "supabase-connection",
+                    "name": "Supabase IAudit"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "operation": "executeQuery",
+                "query": "UPDATE consultas SET tentativas = tentativas + 1, status = CASE WHEN tentativas >= 2 THEN 'erro' ELSE 'agendada' END WHERE id = '{{ $('Webhook Trigger').item.json.body.consulta_id }}'"
+            },
+            "id": "save-error",
+            "name": "Registrar Erro",
+            "type": "n8n-nodes-base.postgres",
+            "typeVersion": 2.5,
+            "position": [
+                1250,
+                400
+            ],
+            "credentials": {
+                "postgres": {
+                    "id": "supabase-connection",
+                    "name": "Supabase IAudit"
+                }
+            }
+        }
+    ],
+    "connections": {
+        "Webhook Trigger": {
+            "main": [
+                [
+                    {
+                        "node": "Marcar como Processando",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Marcar como Processando": {
+            "main": [
+                [
+                    {
+                        "node": "Consultar SEFAZ PR",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Consultar SEFAZ PR": {
+            "main": [
+                [
+                    {
+                        "node": "Aguardar",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Aguardar": {
+            "main": [
+                [
+                    {
+                        "node": "Sucesso?",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Sucesso?": {
+            "main": [
+                [
+                    {
+                        "node": "Salvar Sucesso",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Registrar Erro",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "active": true,
+    "settings": {
+        "executionOrder": "v1"
+    },
+    "versionId": "1",
+    "id": "consulta-cnd-pr",
+    "tags": []
+}
